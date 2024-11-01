@@ -1,0 +1,14 @@
+Generic single-database configuration.
+
+1.pip install alembic
+2.alembic init alembic
+3.# alembic.ini
+sqlalchemy.url = postgresql://username:password@localhost:5432/mydatabase
+
+4.# alembic/env.py
+from db import Base  # Import your Base
+target_metadata = Base.metadata
+
+5.alembic revision --autogenerate -m "Add created_at column to users table"
+
+6.alembic upgrade head
