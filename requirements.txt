@@ -6,3 +6,4 @@ python-multipart
 opencv-python
 face_recognition
 numpy
+alembic

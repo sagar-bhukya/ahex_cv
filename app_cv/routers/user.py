@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from db import SessionLocal
 from models import User,RecognisedFaces,UnknownRecognisedFaces
-from schemas import UserResponse,RecognisedFaceResponse,UnknownRecognisedFaceResponse
+from schemas import UserResponse,RecognisedFaceResponse,UnknownRecognisedFaceResponse,UserCreate
 from utils import save_image,start_face_recognition
 from typing import List
 import cv2
@@ -15,7 +15,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
 @router.post("/users/", response_model=UserResponse)
 async def create_user(
     username: str = Form(...),
@@ -36,8 +35,6 @@ async def create_user(
     db.refresh(db_user)
 
     return db_user
-
-
 @router.get("/users/", response_model=List[UserResponse])
 async def get_all_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
@@ -60,9 +57,10 @@ async def delete_all_users(db: Session = Depends(get_db)):
 
 
 
-@router.get("/recognized_faces/",response_model=List[RecognisedFaceResponse])
-async def get_recognized_faces(db: Session = Depends(get_db)):
-    return db.query(RecognisedFaces).all()
+@router.get("/recognised_faces/", response_model=List[RecognisedFaceResponse])
+def get_recognised_faces(db: Session = Depends(get_db)):
+    faces = db.query(RecognisedFaces).all()
+    return faces
 
 @router.get("/unknown_faces/",response_model=List[UnknownRecognisedFaceResponse])
 async def get_unknown_faces(db: Session = Depends(get_db)):

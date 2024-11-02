@@ -1,26 +1,25 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from fastapi import Form
 from datetime import datetime,time
 
 
 class UserCreate(BaseModel):
-    username: str
+    username: str = Field(..., description="The username of the user")
 
-    # Use Form to receive form data instead of JSON
-    def __init__(self, username: str = Form(...)):
-        self.username = username
 class UserResponse(BaseModel):
-    id: int
     username: str
     photo: str
-    created_at: datetime  # New field for timestamp
+    # Uncomment if you want to include created_at
+    # created_at: datetime
+
     class Config:
         orm_mode = True
-
-
 class RecognisedFaceResponse(BaseModel):
-    name: str
+    username: str
     datetime: datetime
+
+    class Config:
+        orm_mode = True
 
 class UnknownRecognisedFaceResponse(BaseModel):
     path: str
