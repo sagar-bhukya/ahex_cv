@@ -7,6 +7,7 @@ class UserCreate(BaseModel):
     username: str = Field(..., description="The username of the user")
 
 class UserResponse(BaseModel):
+    id:int
     username: str
     photo: str
     # Uncomment if you want to include created_at
@@ -15,6 +16,7 @@ class UserResponse(BaseModel):
     class Config:
         orm_mode = True
 class RecognisedFaceResponse(BaseModel):
+    id:int
     username: str
     datetime: datetime
 
